@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Inter:wght@400;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fredoka", sans-serif;
+  
+  --color-brand-blue-50: #F0F9FF;
+  --color-brand-blue-100: #E0F2FE;
+  --color-brand-blue-200: #BAE6FD;
+  --color-brand-blue-500: #3B82F6;
+  --color-brand-blue-600: #2563EB;
+  --color-brand-blue-900: #1E3A8A;
+}
+
+body {
+  @apply font-sans bg-brand-blue-50 text-brand-blue-900;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.kid-font {
+  @apply font-display;
+}
+
+.glass {
+  @apply bg-white/85 backdrop-blur-md border-2 border-brand-blue-100 shadow-sm transition-all;
+}
+
+.phonics-vowel {
+  @apply text-red-500 border-b-4 border-red-200 px-1;
+}
+
+.phonics-consonant {
+  @apply text-blue-800 border-b-4 border-blue-100 px-1;
+}
+
+.level-dot {
+  @apply w-12 h-12 rounded-full flex items-center justify-center font-bold relative z-10 transition-all;
+}
+
+.level-line {
+  @apply absolute h-1 bg-brand-blue-200 top-1/2 -translate-y-1/2 z-0;
+}
+
+button {
+  @apply transition-all duration-200 active:scale-95;
+}

@@ -1,0 +1,12 @@
+{
+  "name": "小小英语家",
+  "description": "专为三年级设计的趣味英语学习软件，支持自然拼读记忆、多维度练习、语音打分及闯关成长系统。",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "AI-powered speech evaluation",
+    "Gamified learning path",
+    "Phonics-based word segmentation"
+  ]
+}
