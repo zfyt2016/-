@@ -1,7 +1,7 @@
 import { Word, Level } from './types';
 
 export const WORDS: Word[] = [
-  // Greetings
+  // Unit 1: Greetings & School
   {
     id: 'w1',
     text: 'hello',
@@ -12,13 +12,21 @@ export const WORDS: Word[] = [
   },
   {
     id: 'w2',
-    text: 'goodbye',
-    chinese: '再见',
-    phonics: ['good', 'bye'],
-    category: '问候',
-    examples: [{ en: 'Goodbye, teacher.', zh: '老师再见。' }]
+    text: 'name',
+    chinese: '名字',
+    phonics: ['n', 'ame'],
+    category: '学校',
+    examples: [{ en: 'My name is Zoom.', zh: '我的名字叫礼品。' }]
   },
-  // Colors
+  {
+    id: 'w12',
+    text: 'pencil',
+    chinese: '铅笔',
+    phonics: ['pen', 'cil'],
+    category: '学校',
+    examples: [{ en: 'Show me your pencil.', zh: '给我看看你的铅笔。' }]
+  },
+  // Unit 2: Colors
   {
     id: 'w3',
     text: 'red',
@@ -43,7 +51,24 @@ export const WORDS: Word[] = [
     category: '颜色',
     examples: [{ en: 'The sky is blue.', zh: '天空是蓝色的。' }]
   },
-  // Animals
+  // Unit 3: Body
+  {
+    id: 'w9',
+    text: 'eye',
+    chinese: '眼睛',
+    phonics: ['e', 'ye'],
+    category: '身体',
+    examples: [{ en: 'Close your eyes.', zh: '闭上你的眼睛。' }]
+  },
+  {
+    id: 'w10',
+    text: 'nose',
+    chinese: '鼻子',
+    phonics: ['n', 'o', 'se'],
+    category: '身体',
+    examples: [{ en: 'Touch your nose.', zh: '摸摸你的鼻子。' }]
+  },
+  // Unit 4: Animals
   {
     id: 'w6',
     text: 'cat',
@@ -61,94 +86,44 @@ export const WORDS: Word[] = [
     examples: [{ en: 'The dog is big.', zh: '这只狗很大。' }]
   },
   {
-    id: 'w8',
-    text: 'rabbit',
-    chinese: '兔子',
-    phonics: ['rab', 'bit'],
+    id: 'w20',
+    text: 'panda',
+    chinese: '熊猫',
+    phonics: ['pan', 'da'],
     category: '动物',
-    examples: [{ en: 'Rabbits love carrots.', zh: '兔子喜欢胡萝卜。' }]
+    examples: [{ en: 'I like pandas.', zh: '我喜欢大熊猫。' }]
   },
-  // Body
-  {
-    id: 'w9',
-    text: 'eye',
-    chinese: '眼睛',
-    phonics: ['e', 'ye'],
-    category: '身体',
-    examples: [{ en: 'Close your eyes.', zh: '闭上你的眼睛。' }]
-  },
-  {
-    id: 'w10',
-    text: 'nose',
-    chinese: '鼻子',
-    phonics: ['n', 'o', 'se'],
-    category: '身体',
-    examples: [{ en: 'Touch your nose.', zh: '摸摸你的鼻子。' }]
-  },
-  {
-    id: 'w11',
-    text: 'mouth',
-    chinese: '嘴巴',
-    phonics: ['m', 'ou', 'th'],
-    category: '身体',
-    examples: [{ en: 'Open your mouth.', zh: '张开你的嘴巴。' }]
-  },
-  // Numbers
+  // Unit 5: Numbers
   {
     id: 'w15',
-    text: 'one',
-    chinese: '一',
-    phonics: ['o', 'ne'],
+    text: 'three',
+    chinese: '三',
+    phonics: ['th', 'r', 'ee'],
     category: '数字',
-    examples: [{ en: 'I have one apple.', zh: '我有一个苹果。' }]
+    examples: [{ en: 'I am three years old.', zh: '我三岁了。' }]
   },
   {
-    id: 'w16',
-    text: 'ten',
-    chinese: '十',
-    phonics: ['t', 'e', 'n'],
+    id: 'w21',
+    text: 'eight',
+    chinese: '八',
+    phonics: ['eigh', 't'],
     category: '数字',
-    examples: [{ en: 'I count to ten.', zh: '我数到十。' }]
-  },
-  // Family
-  {
-    id: 'w17',
-    text: 'father',
-    chinese: '爸爸',
-    phonics: ['fa', 'ther'],
-    category: '家庭',
-    examples: [{ en: 'This is my father.', zh: '这是我的爸爸。' }]
-  },
-  {
-    id: 'w18',
-    text: 'mother',
-    chinese: '妈妈',
-    phonics: ['moth', 'er'],
-    category: '家庭',
-    examples: [{ en: 'I love my mother.', zh: '我爱我的妈妈。' }]
-  },
-  {
-    id: 'w19',
-    text: 'brother',
-    chinese: '兄弟',
-    phonics: ['bro', 'ther'],
-    category: '家庭',
-    examples: [{ en: 'He is my big brother.', zh: '他是我的大哥哥。' }]
+    examples: [{ en: 'I have eight pencils.', zh: '我有八支铅笔。' }]
   }
 ];
 
 export const LEVELS: Level[] = [
   {
     id: 'l1',
-    title: '第一关：见面打招呼',
-    words: ['w1', 'w2'],
+    title: 'Unit 1：你好校园',
+    words: ['w1', 'w2', 'w12'],
     unlocked: true,
     completed: false,
     starCount: 0
   },
   {
     id: 'l2',
-    title: '第二关：缤纷色彩',
+    title: 'Unit 2：五彩世界',
     words: ['w3', 'w4', 'w5'],
     unlocked: false,
     completed: false,
@@ -156,40 +131,24 @@ export const LEVELS: Level[] = [
   },
   {
     id: 'l3',
-    title: '第三关：可爱的动物',
-    words: ['w6', 'w7', 'w8'],
+    title: 'Unit 3：认识自我',
+    words: ['w9', 'w10'],
     unlocked: false,
     completed: false,
     starCount: 0
   },
   {
     id: 'l4',
-    title: '第四关：认识我的身体',
-    words: ['w9', 'w10', 'w11'],
+    title: 'Unit 4：动物朋友',
+    words: ['w6', 'w7', 'w20'],
     unlocked: false,
     completed: false,
     starCount: 0
   },
   {
     id: 'l5',
-    title: '第五关：我的文具盒',
-    words: ['w12', 'w13', 'w14'],
-    unlocked: false,
-    completed: false,
-    starCount: 0
-  },
-  {
-    id: 'l6',
-    title: '第六关：快乐数一数',
-    words: ['w15', 'w16'],
-    unlocked: false,
-    completed: false,
-    starCount: 0
-  },
-  {
-    id: 'l7',
-    title: '第七关：我的一家人',
-    words: ['w17', 'w18', 'w19'],
+    title: 'Unit 5：趣味数字',
+    words: ['w15', 'w21'],
     unlocked: false,
     completed: false,
     starCount: 0

@@ -35,7 +35,7 @@ const COLORS = {
 };
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'map' | 'study' | 'practice' | 'bookmarks'>('map');
+  const [currentView, setCurrentView] = useState<'map' | 'study' | 'practice' | 'bookmarks' | 'celebration'>('map');
   const [selectedLevelId, setSelectedLevelId] = useState<string | null>(null);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [exerciseType, setExerciseType] = useState<ExerciseType>(ExerciseType.ENGLISH_TO_CHINESE);
@@ -111,6 +111,10 @@ export default function App() {
         completedLevels: [...prev.completedLevels, selectedLevelId]
       }));
     }
+    setCurrentView('celebration');
+  };
+
+  const nextLevel = () => {
     setCurrentView('map');
     setSelectedLevelId(null);
   };
@@ -120,11 +124,9 @@ export default function App() {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 h-20 bg-white rounded-b-[2rem] shadow-sm border-2 border-blue-100 px-6 flex items-center justify-between z-50 mx-4 mt-2">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-yellow-400 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
-            🦁
-          </div>
+          <MascotMini />
           <div>
-            <h1 className="text-xl font-bold text-blue-900 kid-font leading-none">三年级英语趣味背诵</h1>
+            <h1 className="text-xl font-bold text-blue-900 kid-font leading-none">小小英语家</h1>
             <p className="text-[10px] text-blue-400 uppercase tracking-widest font-bold mt-1">Level 3 • Daily Practice</p>
           </div>
         </div>
@@ -190,12 +192,72 @@ export default function App() {
               onToggleBookmark={toggleBookmark}
             />
           )}
+
+          {currentView === 'celebration' && (
+            <CelebrationView key="celebration" onNext={nextLevel} />
+          )}
         </AnimatePresence>
       </main>
 
       {/* Background elements */}
-      <div className="fixed bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-green-50/50 to-transparent -z-10" />
+      <div className="fixed bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-blue-50/50 to-transparent -z-10" />
     </div>
+  );
+}
+
+function MascotMini() {
+  return (
+    <div className="w-12 h-12 bg-yellow-400 rounded-2xl flex items-center justify-center text-2xl shadow-inner relative group">
+      🦁
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"
+      />
+    </div>
+  );
+}
+
+function CelebrationView({ onNext }: { onNext: () => void }) {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="flex flex-col items-center justify-center space-y-8 py-12"
+    >
+      <motion.div 
+        animate={{ 
+          rotate: [0, 10, -10, 10, 0],
+          scale: [1, 1.1, 1]
+        }}
+        transition={{ repeat: Infinity, duration: 2 }}
+        className="text-9xl"
+      >
+        🏆
+      </motion.div>
+      <div className="text-center space-y-4">
+        <h2 className="text-5xl font-black text-blue-900 kid-font">太棒了！闯关成功！</h2>
+        <p className="text-xl text-blue-500 font-bold">你真是一个英语小天才！获得 100 XP 奖励！</p>
+      </div>
+      <div className="flex gap-4">
+        {[...Array(3)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5 + (i * 0.2) }}
+          >
+            <Star size={64} className="text-yellow-400 fill-yellow-400" />
+          </motion.div>
+        ))}
+      </div>
+      <button 
+        onClick={onNext}
+        className="bg-blue-600 text-white px-12 py-5 rounded-[2rem] text-2xl font-black shadow-2xl shadow-blue-200"
+      >
+        继续前进
+      </button>
+    </motion.div>
   );
 }
 
@@ -308,12 +370,12 @@ function StudyStation({ word, index, total, onNext, onBack, onToggleBookmark, is
   };
 
   const handlePieceClick = (piece: string) => {
-    speak(piece);
     const nextExpectedPiece = word.phonics[userInputPieces.length];
     if (piece === nextExpectedPiece) {
+      speak(piece);
       setUserInputPieces(prev => [...prev, piece]);
     } else {
-      // Small shake animation or sound could go here
+      // Shiver effect placeholder or log
     }
   };
 
@@ -333,12 +395,17 @@ function StudyStation({ word, index, total, onNext, onBack, onToggleBookmark, is
         >
           <ArrowLeft size={20} /> 返回地图
         </button>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
+           <div className="hidden sm:flex -space-x-2">
+             {[...Array(total)].map((_, i) => (
+               <div 
+                 key={i} 
+                 className={`w-4 h-4 rounded-full border-2 border-white ${i < index ? 'bg-green-400' : i === index ? 'bg-blue-500 animate-pulse' : 'bg-gray-200'}`} 
+               />
+             ))}
+           </div>
           <div className="text-sm font-black text-blue-500 bg-blue-50 px-4 py-1.5 rounded-full border border-blue-100">
-            单词 {index + 1} / {total}
-          </div>
-          <div className="flex gap-1 h-2 w-20 bg-gray-100 rounded-full overflow-hidden">
-             <div className="bg-blue-500 h-full transition-all" style={{ width: `${(userInputPieces.length / word.phonics.length) * 100}%` }} />
+             {index + 1} / {total}
           </div>
         </div>
       </div>
@@ -354,36 +421,36 @@ function StudyStation({ word, index, total, onNext, onBack, onToggleBookmark, is
               className="space-y-12"
             >
               <div className="text-center space-y-4">
-                <div className="inline-block px-4 py-1 bg-blue-50 text-blue-500 rounded-full text-xs font-bold uppercase tracking-widest">
-                  第一步：观察与发音
+                <div className="inline-block px-4 py-1 bg-blue-50 text-blue-500 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                  PHASE 1: LISTEN & OBSERVE
                 </div>
-                <h3 className="text-5xl font-black text-gray-800 kid-font">{word.chinese}</h3>
+                <h3 className="text-5xl md:text-7xl font-black text-gray-800 kid-font leading-tight">{word.chinese}</h3>
               </div>
 
-              <div className="flex flex-wrap justify-center items-center gap-1">
+              <div className="flex flex-wrap justify-center items-center gap-2">
                 {word.phonics.map((piece, i) => (
                   <motion.div
                     key={i}
-                    whileHover={{ scale: 1.1, translateY: -5 }}
-                    className={`text-8xl font-bold kid-font tracking-tight pb-2 border-b-8 ${/^[aeiouy]/i.test(piece) ? 'text-red-500 border-red-200' : 'text-blue-800 border-blue-100'}`}
+                    whileHover={{ scale: 1.2, rotate: 2 }}
+                    className={`text-6xl md:text-8xl font-bold kid-font tracking-tight pb-4 border-b-8 shadow-sm px-4 rounded-xl ${/^[aeiouy]/i.test(piece) ? 'text-red-500 border-red-200 bg-red-50/30' : 'text-blue-800 border-blue-100 bg-blue-50/30'}`}
                   >
                     {piece}
                   </motion.div>
                 ))}
               </div>
               
-              <div className="flex justify-center gap-4">
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <button 
                   onClick={() => speak(word.text)}
-                  className="group flex items-center gap-3 bg-blue-600 text-white px-10 py-5 rounded-3xl text-xl font-bold shadow-xl shadow-blue-200"
+                  className="group flex items-center justify-center gap-3 bg-blue-600 text-white px-10 py-5 rounded-3xl text-xl font-bold shadow-xl shadow-blue-200"
                 >
-                  <Volume2 size={32} />听读音
+                  <Volume2 size={32} className="group-hover:scale-110 transition-transform" /> 听听读音
                 </button>
                 <button 
                   onClick={() => setStudyPhase('build')}
-                  className="bg-green-500 text-white px-10 py-5 rounded-3xl text-xl font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-100 flex items-center gap-2"
+                  className="bg-green-500 text-white px-10 py-5 rounded-3xl text-xl font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-100 flex items-center justify-center gap-2"
                 >
-                  去挑战拼读 <ChevronRight />
+                  开始拼读挑战 <ChevronRight />
                 </button>
               </div>
             </motion.div>
@@ -395,42 +462,46 @@ function StudyStation({ word, index, total, onNext, onBack, onToggleBookmark, is
               className="space-y-12"
             >
               <div className="text-center space-y-4">
-                <div className="inline-block px-4 py-1 bg-green-50 text-green-600 rounded-full text-xs font-bold uppercase tracking-widest">
-                  第二步：通过拼读记住它
+                <div className="inline-block px-4 py-1 bg-green-50 text-green-600 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                  PHASE 2: BUILD THE WORD
                 </div>
-                <p className="text-gray-400 font-bold italic">请点击正确的发音音块，拼写出单词</p>
-                <h3 className="text-3xl font-black text-gray-500 kid-font">{word.chinese}</h3>
+                <h3 className="text-4xl font-black text-gray-400 kid-font">{word.chinese}</h3>
               </div>
 
-              {/* Input Slots */}
-              <div className="flex justify-center gap-3 h-24">
+              {/* Input Slots - Blocky style */}
+              <div className="flex flex-wrap justify-center gap-4 h-28">
                 {word.phonics.map((_, i) => (
-                  <div 
+                  <motion.div 
                     key={i} 
-                    className={`w-20 rounded-2xl border-4 flex items-center justify-center text-3xl font-black kid-font transition-all ${userInputPieces[i] ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-gray-50 border-dashed border-gray-200'}`}
+                    animate={userInputPieces[i] ? { scale: [1, 1.1, 1], y: [0, -10, 0] } : {}}
+                    className={`
+                      w-24 h-24 rounded-2xl border-b-8 flex items-center justify-center text-4xl font-black kid-font transition-all
+                      ${userInputPieces[i] 
+                        ? 'bg-blue-500 border-blue-700 text-white shadow-lg' 
+                        : 'bg-white border-dashed border-4 border-gray-100 text-transparent'}
+                    `}
                   >
                     {userInputPieces[i] || ''}
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
-              {/* Shuffled Pieces to pick from */}
-              <div className="flex flex-wrap justify-center gap-4 py-6">
-                {!isWordComplete && shuffledPieces.map((piece, i) => {
-                  // Only allow clicking if it's the next correct piece for simplicity in teaching phase
-                  // or let them try and show error. Here we let them click.
-                  return (
-                    <motion.button
-                      key={i}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => handlePieceClick(piece)}
-                      className="bg-white border-2 border-blue-100 p-6 rounded-3xl text-3xl font-bold text-blue-800 shadow-md hover:shadow-lg hover:border-blue-400 transition-all min-w-[80px]"
-                    >
-                      {piece}
-                    </motion.button>
-                  );
-                })}
+              {/* Shuffled Pieces - Tactile Blocks */}
+              <div className="flex flex-wrap justify-center gap-4 py-8">
+                {!isWordComplete && shuffledPieces.map((piece, i) => (
+                  <motion.button
+                    key={i}
+                    whileHover={{ scale: 1.05, y: -4 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handlePieceClick(piece)}
+                    className="
+                      bg-white border-2 border-blue-100 border-b-6 border-r-4 rounded-2xl p-6 text-3xl font-bold text-blue-800 shadow-xl 
+                      hover:border-blue-400 active:border-b-2 active:translate-y-1 transition-all min-w-[100px]
+                    "
+                  >
+                    {piece}
+                  </motion.button>
+                ))}
               </div>
 
               {isWordComplete && (
@@ -519,6 +590,9 @@ function PracticeZone({ words, onComplete, onBack }: { words: Word[], onComplete
     } else {
       // Current mode finished
       if (mode === ExerciseType.ENGLISH_TO_CHINESE) {
+        setMode(ExerciseType.CHINESE_TO_ENGLISH);
+        setCurrentStep(0);
+      } else if (mode === ExerciseType.CHINESE_TO_ENGLISH) {
         setMode(ExerciseType.SPELLING);
         setCurrentStep(0);
       } else if (mode === ExerciseType.SPELLING) {
@@ -545,6 +619,7 @@ function PracticeZone({ words, onComplete, onBack }: { words: Word[], onComplete
         </button>
         <div className="flex gap-2">
            <ModeBadge active={mode === ExerciseType.ENGLISH_TO_CHINESE} text="英译汉" />
+           <ModeBadge active={mode === ExerciseType.CHINESE_TO_ENGLISH} text="汉译英" />
            <ModeBadge active={mode === ExerciseType.SPELLING} text="拼写" />
            <ModeBadge active={mode === ExerciseType.PRONUNCIATION} text="跟读" />
         </div>
@@ -556,19 +631,19 @@ function PracticeZone({ words, onComplete, onBack }: { words: Word[], onComplete
              Step {currentStep + 1} / {words.length} • Challenging
           </p>
           <h3 className="text-6xl font-black text-blue-900 kid-font">
-            {mode === ExerciseType.ENGLISH_TO_CHINESE ? currentWord.text : currentWord.chinese}
+            {mode === ExerciseType.ENGLISH_TO_CHINESE ? currentWord.text : mode === ExerciseType.SPELLING || mode === ExerciseType.PRONUNCIATION ? currentWord.chinese : currentWord.chinese}
           </h3>
         </div>
 
         <div className="w-full max-w-md">
-          {mode === ExerciseType.ENGLISH_TO_CHINESE && (
+          {(mode === ExerciseType.ENGLISH_TO_CHINESE || mode === ExerciseType.CHINESE_TO_ENGLISH) && (
             <div className="grid grid-cols-1 gap-4">
               {options.map((option, idx) => (
                 <OptionButton 
                   key={idx}
                   text={option} 
-                  correct={isCorrect === true && option === currentWord.chinese}
-                  wrong={isCorrect === false && option !== currentWord.chinese}
+                  correct={isCorrect === true && (mode === ExerciseType.ENGLISH_TO_CHINESE ? option === currentWord.chinese : option === currentWord.text)}
+                  wrong={isCorrect === false && (mode === ExerciseType.ENGLISH_TO_CHINESE ? option !== currentWord.chinese : option !== currentWord.text)}
                   onClick={() => checkAnswer(option)} 
                 />
               ))}
